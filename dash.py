@@ -131,3 +131,25 @@ def index():
                    for l in log)
     active = len([1 for i in range(30)
                   if cnt.get((now.date() - timedelta(days=i)).isoformat())])
+
+    return f"""<!doctype html><meta name=viewport content="width=device-width,initial-scale=1">
+<title>$BULLCOIN terminal</title><style>{CSS}</style>
+<div class=top><div class=w><div><div class=wm><span>$</span>bullcoin</div>
+<div class=desk>autopost terminal</div></div><div class=live>&#9679; posting</div></div></div>
+<div class=w>
+<div class=hero>
+<div><div class=eb>consecutive days posted</div><div class="big gold">{st.get('streak',0)}<small>days</small></div>
+<div class=sub>{st.get('total',0)} posts published &middot; {len(done)} of {len(pl)} today</div></div>
+<div><div class=eb>next post</div><div class=big>{nt}<small>{left}</small></div>
+<div class=q>{nxt[0] if nxt else 'last post of the day'}</div></div>
+</div>
+<div class=p><h2>Activity &middot; {active} of last 30 days</h2><div class=bars>{bars}</div></div>
+<div class=p><h2>Today</h2><table><tr><th>time</th><th>slot</th><th>status</th></tr>{rows}</table></div>
+<div class=p><h2>Published</h2><table><tr><th>when</th><th>post</th><th>sent</th></tr>
+{hist or '<tr><td colspan=3 class=dim>nothing yet</td></tr>'}</table></div>
+<div class=sub>{sum(len(v) for v in banks.values())} lines in rotation &middot;
+{' &middot; '.join(f'{k} {len(v)}' for k,v in banks.items())}</div>
+</div>"""
+
+
+app.run(host="127.0.0.1", port=8080)
